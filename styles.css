@@ -92,7 +92,8 @@ img {
 
 .site-nav a,
 .contact-links a,
-.hero-links a {
+.hero-links a,
+.project-links a {
   color: var(--ink-soft);
 }
 
