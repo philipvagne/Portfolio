@@ -510,11 +510,11 @@ a {
   font-size: 0.94rem;
 }
 
-.zorune-hero-media .project-figure {
+.case-study-hero-media .project-figure {
   padding-top: 42px;
 }
 
-.zorune-hero-media .project-image-button--app {
+.case-study-hero-media .project-image-button--app {
   padding: 0;
   border-color: transparent;
   border-radius: calc(var(--radius-lg) + 1px);
@@ -524,14 +524,14 @@ a {
     0 0 34px rgba(109, 92, 255, 0.03);
 }
 
-.zorune-hero-media .project-image-button--app img {
+.case-study-hero-media .project-image-button--app img {
   display: block;
   width: 100%;
   border-radius: calc(var(--radius-md) + 1px);
   aspect-ratio: auto;
 }
 
-.zorune-hero-media .project-figure figcaption {
+.case-study-hero-media .project-figure figcaption {
   margin-top: 14px;
   color: var(--text-muted);
   font-size: 0.86rem;
@@ -804,7 +804,7 @@ a {
   gap: 24px;
 }
 
-.page-shell--zorune .site-footer {
+.page-shell--case-study .site-footer {
   margin-top: 36px;
   padding-top: 30px;
   border-top: 1px solid var(--line);
@@ -1188,11 +1188,11 @@ a {
     font-size: 1.4rem;
   }
 
-  .zorune-hero-media .project-figure {
+  .case-study-hero-media .project-figure {
     padding-top: 24px;
   }
 
-  .zorune-hero-media .project-image-button--app {
+  .case-study-hero-media .project-image-button--app {
     padding: 0;
   }
 

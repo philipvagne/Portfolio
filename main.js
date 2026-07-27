@@ -135,29 +135,91 @@ const zoruneArchitecture = [
   },
 ]
 
-const semanticRiskCategories = [
+const semanticCapabilities = [
   {
-    title: 'Security Hazards',
+    title: 'Semantic source-text review',
     description:
-      'Potential credentials, unsafe operational language, or risky implementation notes.',
+      'The agent reviews human-written comments, notes, and documentation inside one supported source file per run so risky language can be surfaced before review or release.',
+    icon: `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M10 5.5H7.75A2.25 2.25 0 0 0 5.5 7.75v8.5A2.25 2.25 0 0 0 7.75 18.5h8.5a2.25 2.25 0 0 0 2.25-2.25V14" />
+        <path d="M14.5 5.5h4v4" />
+        <path d="M18.5 5.5 11.75 12.25" />
+        <path d="M8.75 14.5h4.5" />
+      </svg>
+    `,
   },
   {
-    title: 'Disclosure Risks',
+    title: 'Configurable review boundaries',
     description:
-      'Internal codenames, confidential project references, or sensitive contextual information.',
+      'Project context and sensitive terms are loaded from configuration files, which keeps the review scoped, inspectable, and easier to adapt without changing the core pipeline.',
+    icon: `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M7.5 6.5h9" />
+        <path d="M7.5 12h9" />
+        <path d="M7.5 17.5h4.5" />
+        <path d="M5.5 6.5h0" />
+        <path d="M5.5 12h0" />
+        <path d="M5.5 17.5h0" />
+        <path d="M18 16.25a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5Z" />
+      </svg>
+    `,
   },
   {
-    title: 'Professionalism Risks',
+    title: 'Structured audit reporting',
     description:
-      'Unprofessional, careless, or inappropriate language in repository content.',
+      'Findings are returned in structured outputs and written into a Markdown audit report so the result stays reviewable, explainable, and useful in a real workflow.',
+    icon: `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M8 5.5h6.25L18.5 9.75V18A2 2 0 0 1 16.5 20H8A2 2 0 0 1 6 18V7.5a2 2 0 0 1 2-2Z" />
+        <path d="M14 5.5V10h4.5" />
+        <path d="M9 13h6" />
+        <path d="M9 16h4.25" />
+      </svg>
+    `,
+  },
+]
+
+const semanticDecisions = [
+  {
+    title: 'Architecture mattered more than prompting alone',
+    description:
+      'The useful part of the system was not only the model call. Extraction, context loading, validation, and reporting created the boundaries that made the review output trustworthy.',
+  },
+  {
+    title: 'Deterministic validation stays in the loop',
+    description:
+      'Semantic review was paired with deterministic checks so the pipeline could produce stable baseline behavior instead of relying entirely on model interpretation.',
+  },
+  {
+    title: 'Evaluation had to be measurable',
+    description:
+      'A convincing demo was not enough. The project used controlled test cases and a broader repository-style benchmark to check behavior across multiple risk categories.',
+  },
+  {
+    title: 'Configuration was safer than hardcoding',
+    description:
+      'Context files and sensitive-term configuration made the review boundary easier to inspect and adapt without hiding project-specific assumptions inside the implementation.',
   },
 ]
 
 const semanticArchitecture = [
-  'Local text extraction',
-  'Configurable scoped review',
-  'Deterministic validation',
-  'Structured outputs',
+  {
+    title: 'Runtime',
+    items: ['Python CLI'],
+  },
+  {
+    title: 'Review',
+    items: ['Google ADK', 'Gemini / deterministic'],
+  },
+  {
+    title: 'Configuration',
+    items: ['Project-context YAML', 'Sensitive-terms YAML'],
+  },
+  {
+    title: 'Outputs',
+    items: ['Structured findings', 'Markdown audit report'],
+  },
 ]
 
 const meetingWorkflow = [
@@ -338,10 +400,10 @@ const renderInlineLinks = (items) => `
   </div>
 `
 
-const renderProjectHero = ({ eyebrow, title, summary, status }) => `
+const renderProjectHero = ({ eyebrow, title, summary, status, hideEyebrow = false }) => `
   <section class="project-hero">
     <div class="project-hero-copy">
-      ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}
+      ${eyebrow && !hideEyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}
       <h1>${title}</h1>
       <p class="project-hero-summary">${summary}</p>
       ${status ? `<p class="project-status-pill">${status}</p>` : ''}
@@ -556,7 +618,7 @@ const renderHomePage = () => `
 `
 
 const renderZorunePage = () => `
-  <main class="page-shell page-shell--project page-shell--zorune">
+  <main class="page-shell page-shell--project page-shell--case-study page-shell--zorune">
     ${renderHeader(routes.zorune)}
     ${renderProjectHero({
       title: 'Zorune',
@@ -564,7 +626,7 @@ const renderZorunePage = () => `
         'A collaborative operations workspace that brings projects, tasks, notes, teams, and everyday workflows into one calmer system.',
     })}
 
-    <section class="zorune-hero-media">
+    <section class="case-study-hero-media">
       ${renderScreenshotFigure({
         src: '/assets/projects/zorune/zorune-workspace.png',
         alt: 'Current Zorune workspace showing projects, tasks, and team context.',
@@ -632,101 +694,91 @@ const renderZorunePage = () => `
 `
 
 const renderSemanticPage = () => `
-  <main class="page-shell page-shell--project">
+  <main class="page-shell page-shell--project page-shell--case-study page-shell--semantic">
     ${renderHeader(routes.semantic)}
     ${renderProjectHero({
       eyebrow: 'AI AGENT · EVALUATION',
-      title: 'Semantic Review Agent',
+      hideEyebrow: true,
+      title: 'Semantic Compliance Review Agent',
       summary:
-        'A CLI agent that identifies potentially risky language in software repositories across security, disclosure, and professionalism categories.',
+        'An AI-assisted semantic review tool that detects risky human-written language in repositories before review or release.',
     })}
 
-    ${renderScreenshotFigure({
-      src: '/assets/projects/semantic-review-agent/semantic-review-audit.png',
-      alt: 'Terminal-style executive summary from the Semantic Review Agent showing issues found, severity, categories, and audit matrix.',
-      caption: 'Audit summary output from the Semantic Compliance Review Agent.',
-      kind: 'terminal',
-    })}
+    <section class="case-study-hero-media">
+      ${renderScreenshotFigure({
+        src: '/assets/projects/semantic-review-agent/semantic-review-audit.png',
+        alt: 'Semantic Compliance Review Agent audit summary showing findings, severity, confidence, and categorized review results.',
+        caption: 'Audit summary output from the Semantic Compliance Review Agent.',
+        kind: 'app',
+      })}
+    </section>
 
-    <div class="project-content">
-      ${renderCaseStudyIntro(
-        'The problem',
-        'Repository text can create security, disclosure, or professionalism risk even when the code itself is technically valid. This project focuses on reviewing that material systematically so those signals can be surfaced, inspected, and evaluated.',
-      )}
-
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>Review pipeline</h2>
-        </div>
-        ${renderFlow([
-          'Repository files',
-          'Local text extraction',
-          'Category review',
-          'Deterministic validation',
-          'Structured findings',
-          'Benchmark evaluation',
-        ])}
-      </section>
-
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>Risk categories</h2>
-        </div>
-        ${renderFeatureGrid(semanticRiskCategories)}
-      </section>
-
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>Architecture</h2>
-        </div>
-        <div class="state-list state-list--grid">
-          ${semanticArchitecture.map((item) => `<span>${item}</span>`).join('')}
-        </div>
-      </section>
-
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>Evaluation</h2>
+    <div class="project-content zorune-case-study">
+      <section class="case-study-section narrative-pair" aria-label="Problem and solution">
+        <article class="narrative-block narrative-block--problem">
+          <p class="eyebrow">The problem</p>
+          <h2>Code review tools often miss the human-written language that creates release risk.</h2>
           <p>
-            The final evaluation used a 20-case repository benchmark to test the review pipeline across broader wording and risk-category variety.
+            Traditional static analysis is good at checking code correctness, but comments, TODOs, and documentation can still expose credentials, internal names, or unprofessional communication that never appears as an executable bug.
           </p>
-        </div>
-        <div class="principle-block">
-          <p>Measurable evaluation mattered more than a convincing demonstration.</p>
-        </div>
-      </section>
+        </article>
 
-      <section class="case-study-section">
-        <div class="lesson-quote">
+        <article class="narrative-block narrative-block--solution">
+          <p class="eyebrow">The solution</p>
+          <h2>Combine semantic analysis with deterministic validation and structured reporting.</h2>
           <p>
-            An agent is not only the LLM. Trust comes from the architecture around it: extraction, configuration, validation, deterministic components, and structured outputs.
+            The agent extracts reviewable text, loads project-specific context, and runs semantic review alongside deterministic checks so findings can be explained, validated, and delivered in a report that is useful for human review.
           </p>
+        </article>
+      </section>
+
+      <section class="case-study-section case-study-section--capabilities">
+        <div class="section-heading-inline section-heading-inline--compact">
+          <h2>Key capabilities</h2>
+        </div>
+        ${renderCapabilityTriptych(semanticCapabilities)}
+      </section>
+
+      <section class="case-study-section systems-band" aria-label="Architecture and engineering decisions">
+        <div class="systems-band-column systems-band-column--architecture">
+          <div class="section-heading-inline section-heading-inline--compact">
+            <h2>Architecture</h2>
+          </div>
+          ${renderEditorialColumns(semanticArchitecture)}
+        </div>
+
+        <div class="systems-band-column systems-band-column--decisions">
+          <div class="section-heading-inline section-heading-inline--compact">
+            <h2>Engineering decisions</h2>
+          </div>
+          ${renderDecisionStack(semanticDecisions)}
         </div>
       </section>
 
-      <section class="case-study-section case-study-section--links">
-        <div class="section-heading-inline">
-          <h2>Project links</h2>
+      <section class="case-study-section case-study-section--ending">
+        <div class="ending-intro">
+          <p>Interested in the project?</p>
         </div>
         ${renderInlineLinks([
           {
             href: links.semanticRepo,
-            text: 'View repository',
+            text: 'View repository →',
             external: true,
-            label: 'View the Semantic Review Agent repository on GitHub',
+            label: 'View the Semantic Compliance Review Agent repository on GitHub',
           },
           {
             href: links.semanticVideo,
-            text: 'Watch project video',
+            text: 'Watch project video →',
             external: true,
-            label: 'Watch the Semantic Review Agent project video on YouTube',
+            label: 'Watch the Semantic Compliance Review Agent project video on YouTube',
           },
           {
             href: links.semanticKaggle,
-            text: 'Read the Kaggle write-up',
+            text: 'Read Kaggle write-up →',
             external: true,
-            label: 'Read the Semantic Review Agent Kaggle write-up',
+            label: 'Read the Semantic Compliance Review Agent Kaggle write-up',
           },
+          { href: `${routes.home}#work`, text: 'Back to selected work →' },
         ])}
       </section>
     </div>
