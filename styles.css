@@ -316,12 +316,12 @@ a {
 }
 
 .home-project-media--zorune {
-  padding: 14px;
-  background: var(--surface-muted);
+  padding: 0;
+  background: transparent;
 }
 
 .home-project-media--zorune img {
-  border-radius: calc(var(--radius-md) - 6px);
+  border-radius: calc(var(--radius-md) + 1px);
   aspect-ratio: 16 / 11;
 }
 

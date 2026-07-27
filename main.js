@@ -222,45 +222,88 @@ const semanticArchitecture = [
   },
 ]
 
-const meetingWorkflow = [
+const meetingCapabilities = [
   {
-    number: '01',
-    title: 'Select an upcoming meeting',
-    description: 'The user begins from the meeting list.',
-  },
-  {
-    number: '02',
-    title: 'Gather relevant context',
-    description: 'Useful information is collected from connected sources.',
-  },
-  {
-    number: '03',
-    title: 'Generate a concise brief',
+    title: 'Context aggregation',
     description:
-      'The most relevant details are organized into a calm, scannable preparation view.',
+      'Meeting details, related project context, source references, and prior notes are brought into one preparation flow instead of requiring manual searching across separate tools.',
+    icon: `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M6.75 6h4.5v4.5h-4.5Z" />
+        <path d="M12.75 6h4.5v4.5h-4.5Z" />
+        <path d="M6.75 13.5h4.5V18h-4.5Z" />
+        <path d="M12.75 13.5h4.5V18h-4.5Z" />
+      </svg>
+    `,
   },
   {
-    number: '04',
-    title: 'Add personal notes',
-    description: 'The user can keep their own context alongside the generated brief.',
+    title: 'Focused brief generation',
+    description:
+      'The assistant turns gathered context into a concise meeting brief with timing, summary, key information, and a clear starting point before the call begins.',
+    icon: `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M7.25 5.5h9.5A2.25 2.25 0 0 1 19 7.75v8.5a2.25 2.25 0 0 1-2.25 2.25H11l-4 3v-4H7.25A2.25 2.25 0 0 1 5 15.25v-7.5A2.25 2.25 0 0 1 7.25 5.5Z" />
+        <path d="M8.75 9.25h6.5" />
+        <path d="M8.75 12.5h5" />
+      </svg>
+    `,
+  },
+  {
+    title: 'Preparation workflow',
+    description:
+      'Upcoming meetings, brief review, and personal notes stay in one sequence so preparation feels deliberate rather than improvised right before the conversation starts.',
+    icon: `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M7 6.5h10" />
+        <path d="M7 12h6.5" />
+        <path d="M7 17.5h8.5" />
+        <path d="M4.5 6.5h0" />
+        <path d="M4.5 12h0" />
+        <path d="M4.5 17.5h0" />
+      </svg>
+    `,
   },
 ]
 
-const meetingPrinciples = [
+const meetingArchitecture = [
   {
-    title: 'Surface what matters',
-    description:
-      'Prioritize relevant context rather than showing everything available.',
+    title: 'Application',
+    items: ['Tauri', 'React'],
   },
   {
-    title: 'Reduce preparation time',
-    description:
-      'Make it faster to understand what matters before the meeting begins.',
+    title: 'Services',
+    items: ['Meeting scheduler', 'Context collector'],
   },
   {
-    title: 'Keep the brief calm',
+    title: 'Integrations',
+    items: ['Google Calendar', 'Gmail', 'Google Drive'],
+  },
+  {
+    title: 'Data & AI',
+    items: ['SQLite', 'Gemini / OpenAI'],
+  },
+]
+
+const meetingDecisions = [
+  {
+    title: 'Preparation should reduce searching, not create another workspace',
     description:
-      'Present information in a clear, focused format that is easy to act on.',
+      'The product direction stays narrow on pre-meeting preparation so it can reduce scattered searching without becoming a broader productivity surface.',
+  },
+  {
+    title: 'Relevance matters more than collecting everything',
+    description:
+      'The brief is stronger when it surfaces the most useful context instead of trying to reproduce every available source artifact before a meeting.',
+  },
+  {
+    title: 'The brief should support human judgment',
+    description:
+      'The goal is to prepare the user with clearer context, not to replace their decisions or suggest that the system should run the meeting for them.',
+  },
+  {
+    title: 'Keep the workflow narrow while the product is still evolving',
+    description:
+      'Staying focused on one calm preparation sequence makes the current direction easier to refine honestly before expanding integrations or broader assistant behavior.',
   },
 ]
 
@@ -283,7 +326,7 @@ const projectMeta = {
   [routes.meeting]: {
     title: 'Meeting Preparation Assistant — Philip Agné',
     description:
-      'An in-development product page for a meeting preparation assistant by Philip Agné.',
+      'Case study for an in-development meeting preparation workflow by Philip Agné.',
   },
 }
 
@@ -682,8 +725,8 @@ const renderZorunePage = () => `
           <p>Interested in the project?</p>
         </div>
         ${renderInlineLinks([
-          { href: links.appRepo, text: 'Repository', external: true },
-          { href: `${routes.home}#work`, text: 'Back to portfolio' },
+          { href: links.appRepo, text: 'Repository →', external: true },
+          { href: `${routes.home}#work`, text: 'Back to portfolio →' },
         ])}
       </section>
     </div>
@@ -789,53 +832,80 @@ const renderSemanticPage = () => `
 `
 
 const renderMeetingPage = () => `
-  <main class="page-shell page-shell--project">
+  <main class="page-shell page-shell--project page-shell--case-study page-shell--meeting">
     ${renderHeader(routes.meeting)}
     ${renderProjectHero({
       eyebrow: 'AI WORKFLOW · IN DEVELOPMENT',
-      title: 'Meeting Prep Assistant',
+      hideEyebrow: true,
+      title: 'Meeting Preparation Assistant',
       summary:
-        'A focused assistant that gathers relevant context before meetings and turns scattered information into a clear preparation brief.',
-      status: 'In development',
+        'An in-development meeting preparation workflow that gathers scattered context and turns it into a focused brief before the call.',
     })}
 
-    ${renderScreenshotFigure({
-      src: '/assets/projects/meeting-prep/meeting-prep-overview.png',
-      alt: 'Meeting Prep Assistant showing a meeting list on the left and a generated meeting brief with key information and notes on the right.',
-      caption: 'Current interface direction for the Meeting Preparation Assistant.',
-      kind: 'wide-app',
-    })}
+    <section class="case-study-hero-media">
+      ${renderScreenshotFigure({
+        src: '/assets/projects/meeting-prep/meeting-prep-overview.png',
+        alt: 'Meeting Preparation Assistant showing a meeting list on the left and a generated meeting brief with key information and notes on the right.',
+        caption: 'Current interface direction for the Meeting Preparation Assistant.',
+        kind: 'app',
+      })}
+    </section>
 
-    <div class="project-content">
-      ${renderCaseStudyIntro(
-        'The problem',
-        'Meeting context is often scattered across calendar events, messages, files, and personal notes. Preparing well takes time, and important details are easy to miss.',
-      )}
+    <div class="project-content zorune-case-study">
+      <section class="case-study-section narrative-pair" aria-label="Problem and solution">
+        <article class="narrative-block narrative-block--problem">
+          <p class="eyebrow">The problem</p>
+          <h2>Preparing for a meeting usually means searching five places before the call.</h2>
+          <p>
+            Calendar events, documents, messages, and personal notes often hold the context you need, but it is scattered across separate places. Even when the information exists somewhere, the prep work still feels repetitive and easy to miss.
+          </p>
+        </article>
 
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>The workflow</h2>
-        </div>
-        ${renderWorkflowGrid(meetingWorkflow)}
+        <article class="narrative-block narrative-block--solution">
+          <p class="eyebrow">The solution</p>
+          <h2>Gather the relevant context first, then turn it into a brief worth reviewing.</h2>
+          <p>
+            The Meeting Preparation Assistant brings useful meeting context into one preparation flow and turns it into a focused brief, so the user can review what matters without pretending the product should replace human judgment.
+          </p>
+        </article>
       </section>
 
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>Product principles</h2>
+      <section class="case-study-section case-study-section--capabilities">
+        <div class="section-heading-inline section-heading-inline--compact">
+          <h2>Key capabilities</h2>
         </div>
-        ${renderFeatureGrid(meetingPrinciples)}
+        ${renderCapabilityTriptych(meetingCapabilities)}
       </section>
 
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>Current state</h2>
-          <p>
-            The current build establishes the interface and core preparation workflow. The next stage is refining the retrieval logic, source integrations, and presentation quality.
-          </p>
-          <p>
-            Calendar, Gmail, Drive, and personal notes represent the current source direction shown in the workflow.
-          </p>
+      <section class="case-study-section systems-band" aria-label="Architecture and engineering decisions">
+        <div class="systems-band-column systems-band-column--architecture">
+          <div class="section-heading-inline section-heading-inline--compact">
+            <h2>Architecture</h2>
+          </div>
+          ${renderEditorialColumns(meetingArchitecture)}
         </div>
+
+        <div class="systems-band-column systems-band-column--decisions">
+          <div class="section-heading-inline section-heading-inline--compact">
+            <h2>Engineering decisions</h2>
+          </div>
+          ${renderDecisionStack(meetingDecisions)}
+        </div>
+      </section>
+
+      <section class="case-study-section case-study-section--ending">
+        <div class="ending-intro">
+          <p>Interested in the project?</p>
+        </div>
+        ${renderInlineLinks([
+          {
+            href: 'https://github.com/philipvagne/meeting-prep-assistant',
+            text: 'View repository →',
+            external: true,
+            label: 'View the Meeting Preparation Assistant repository on GitHub',
+          },
+          { href: `${routes.home}#work`, text: 'Back to selected work →' },
+        ])}
       </section>
     </div>
 
