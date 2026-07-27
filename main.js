@@ -61,24 +61,40 @@ const homeProjects = [
 
 const zoruneCapabilities = [
   {
-    title: 'Authentication and role-aware access',
+    title: 'Operational workspaces',
     description:
-      'Access control was treated as part of the product foundation, not something to bolt on later.',
+      'Zorune is built around shared workspaces where organizations, projects, tasks, and day-to-day planning can live together instead of being split across separate tools.',
+    icon: `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M4.5 18.5V7.75A2.25 2.25 0 0 1 6.75 5.5h10.5A2.25 2.25 0 0 1 19.5 7.75V18.5" />
+        <path d="M9 9.5h6" />
+        <path d="M9 13h3.5" />
+        <path d="M7.5 18.5h9" />
+      </svg>
+    `,
   },
   {
-    title: 'Multi-tenant organizations and workspaces',
+    title: 'Connected knowledge',
     description:
-      'The application structure supports organizations, shared workspaces, and permission-aware collaboration.',
+      'Notes, work objects, and team context are meant to stay close to each other so important information does not disappear into disconnected documents and side systems.',
+    icon: `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M7.25 5.5h9.5A2.25 2.25 0 0 1 19 7.75v8.5a2.25 2.25 0 0 1-2.25 2.25H11l-4 3v-4H7.25A2.25 2.25 0 0 1 5 15.25v-7.5A2.25 2.25 0 0 1 7.25 5.5Z" />
+        <path d="M8.75 9.25h6.5" />
+        <path d="M8.75 12.5h5" />
+      </svg>
+    `,
   },
   {
-    title: 'Projects, tasks, notes, and team workflows',
+    title: 'Calm coordination',
     description:
-      'Core work objects live together in one system rather than across disconnected tools and views.',
-  },
-  {
-    title: 'Real-time notifications and updates',
-    description:
-      'Important activity can surface immediately without requiring constant refreshing or manual checking.',
+      'Realtime updates and notifications support collaboration, but the goal is measured coordination rather than creating a louder or more distracting interface.',
+    icon: `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M12 4.75a4 4 0 0 1 4 4v1.25c0 .72.2 1.43.56 2.06l1.04 1.77A1.5 1.5 0 0 1 16.31 16H7.69a1.5 1.5 0 0 1-1.29-2.17l1.04-1.77c.36-.63.56-1.34.56-2.06V8.75a4 4 0 0 1 4-4Z" />
+        <path d="M10 18a2 2 0 0 0 4 0" />
+      </svg>
+    `,
   },
 ]
 
@@ -100,15 +116,23 @@ const zoruneDecisions = [
   },
 ]
 
-const zoruneCurrentState = [
-  'Authentication',
-  'Role-based access',
-  'Multi-tenant organizations',
-  'Projects',
-  'Tasks',
-  'Notes',
-  'Team workspaces',
-  'Real-time notifications',
+const zoruneArchitecture = [
+  {
+    title: 'Frontend',
+    items: ['React', 'TypeScript'],
+  },
+  {
+    title: 'Backend',
+    items: ['NestJS', 'REST API'],
+  },
+  {
+    title: 'Database',
+    items: ['PostgreSQL', 'Prisma'],
+  },
+  {
+    title: 'Realtime',
+    items: ['Socket.IO'],
+  },
 ]
 
 const semanticRiskCategories = [
@@ -317,7 +341,7 @@ const renderInlineLinks = (items) => `
 const renderProjectHero = ({ eyebrow, title, summary, status }) => `
   <section class="project-hero">
     <div class="project-hero-copy">
-      <p class="eyebrow">${eyebrow}</p>
+      ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}
       <h1>${title}</h1>
       <p class="project-hero-summary">${summary}</p>
       ${status ? `<p class="project-status-pill">${status}</p>` : ''}
@@ -381,6 +405,73 @@ const renderLessonBlocks = (items) => `
 const renderProjectStateList = (items) => `
   <div class="state-list">
     ${items.map((item) => `<span>${item}</span>`).join('')}
+  </div>
+`
+
+const renderEditorialList = (items) => `
+  <div class="editorial-list">
+    ${items
+      .map(
+        (item) => `
+          <article class="editorial-item">
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+          </article>
+        `,
+      )
+      .join('')}
+  </div>
+`
+
+const renderEditorialColumns = (items) => `
+  <div class="editorial-columns">
+    ${items
+      .map(
+        (item) => `
+          <article class="editorial-column">
+            <h3>${item.title}</h3>
+            <div class="editorial-column-copy">
+              ${item.items.map((value) => `<p>${value}</p>`).join('')}
+            </div>
+          </article>
+        `,
+      )
+      .join('')}
+  </div>
+`
+
+const renderDecisionStack = (items) => `
+  <div class="decision-stack">
+    ${items
+      .map(
+        (item) => `
+          <article class="decision-block">
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+          </article>
+        `,
+      )
+      .join('')}
+  </div>
+`
+
+const renderCapabilityTriptych = (items) => `
+  <div class="capability-triptych" aria-label="Key capabilities">
+    ${items
+      .map(
+        (item) => `
+          <article class="capability-item">
+            <div class="capability-marker" aria-hidden="true">
+              ${item.icon}
+            </div>
+            <div class="capability-copy">
+              <h3>${item.title}</h3>
+              <p>${item.description}</p>
+            </div>
+          </article>
+        `,
+      )
+      .join('')}
   </div>
 `
 
@@ -465,74 +556,72 @@ const renderHomePage = () => `
 `
 
 const renderZorunePage = () => `
-  <main class="page-shell page-shell--project">
+  <main class="page-shell page-shell--project page-shell--zorune">
     ${renderHeader(routes.zorune)}
     ${renderProjectHero({
-      eyebrow: 'FULL-STACK PRODUCT',
       title: 'Zorune',
       summary:
         'A collaborative operations workspace that brings projects, tasks, notes, teams, and everyday workflows into one calmer system.',
     })}
 
-    ${renderScreenshotFigure({
-      src: '/assets/projects/zorune/zorune-workspace.png',
-      alt: 'Current Zorune workspace showing projects, tasks, and team context.',
-      caption: 'Current workspace view from the active Zorune build.',
-      kind: 'app',
-    })}
+    <section class="zorune-hero-media">
+      ${renderScreenshotFigure({
+        src: '/assets/projects/zorune/zorune-workspace.png',
+        alt: 'Current Zorune workspace showing projects, tasks, and team context.',
+        caption: 'Current workspace view from the active Zorune build.',
+        kind: 'app',
+      })}
+    </section>
 
-    <div class="project-content">
-      ${renderCaseStudyIntro(
-        'The problem',
-        'Many work tools separate information into disconnected systems, which increases context-switching and makes routine work feel heavier than it should. Zorune is an attempt to bring core operational workflows together in a way that feels more coherent and less noisy.',
-      )}
-
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>What I built</h2>
+    <div class="project-content zorune-case-study">
+      <section class="case-study-section narrative-pair" aria-label="Problem and solution">
+        <article class="narrative-block narrative-block--problem">
+          <p class="eyebrow">The problem</p>
+          <h2>Operational work often breaks apart across too many tools.</h2>
           <p>
-            Zorune grew into a full-stack product exercise spanning access control, shared workspaces, connected work objects, and real-time updates.
+            Many work tools separate information into disconnected systems, which increases context-switching and makes routine work feel heavier than it should. Zorune began as a response to that fragmentation.
           </p>
-        </div>
-        ${renderFeatureGrid(zoruneCapabilities)}
-      </section>
+        </article>
 
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>System architecture</h2>
-        </div>
-        ${renderStackStrip([
-          { label: 'Frontend', value: 'React · TypeScript' },
-          { label: 'Backend', value: 'NestJS · REST APIs' },
-          { label: 'Data', value: 'PostgreSQL · Prisma' },
-          { label: 'Real-time', value: 'Socket.IO' },
-        ])}
-      </section>
-
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>Product decisions</h2>
-        </div>
-        ${renderLessonBlocks(zoruneDecisions)}
-      </section>
-
-      <section class="case-study-section">
-        <div class="section-heading-inline">
-          <h2>Current state</h2>
+        <article class="narrative-block narrative-block--solution">
+          <p class="eyebrow">The solution</p>
+          <h2>Bring the essential pieces together without making the product louder.</h2>
           <p>
-            The current build includes the core system foundations and workflow areas below.
+            Zorune exists because operational software often becomes more complicated as more tools are added around the work. The product idea was to bring the core pieces together in one calmer system, where clarity mattered more than feature accumulation and reducing friction mattered more than adding another surface to manage.
           </p>
-        </div>
-        ${renderProjectStateList(zoruneCurrentState)}
+        </article>
       </section>
 
-      <section class="case-study-section case-study-section--links">
-        <div class="section-heading-inline">
-          <h2>Project links</h2>
+      <section class="case-study-section case-study-section--capabilities">
+        <div class="section-heading-inline section-heading-inline--compact">
+          <h2>Key capabilities</h2>
+        </div>
+        ${renderCapabilityTriptych(zoruneCapabilities)}
+      </section>
+
+      <section class="case-study-section systems-band" aria-label="Architecture and engineering decisions">
+        <div class="systems-band-column systems-band-column--architecture">
+          <div class="section-heading-inline section-heading-inline--compact">
+            <h2>Architecture</h2>
+          </div>
+          ${renderEditorialColumns(zoruneArchitecture)}
+        </div>
+
+        <div class="systems-band-column systems-band-column--decisions">
+          <div class="section-heading-inline section-heading-inline--compact">
+            <h2>Engineering decisions</h2>
+          </div>
+          ${renderDecisionStack(zoruneDecisions)}
+        </div>
+      </section>
+
+      <section class="case-study-section case-study-section--ending">
+        <div class="ending-intro">
+          <p>Interested in the project?</p>
         </div>
         ${renderInlineLinks([
-          { href: links.appRepo, text: 'View repository', external: true },
-          { href: links.landingPage, text: 'View landing page', external: true },
+          { href: links.appRepo, text: 'Repository', external: true },
+          { href: `${routes.home}#work`, text: 'Back to portfolio' },
         ])}
       </section>
     </div>
