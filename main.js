@@ -7,6 +7,8 @@ const links = {
   linkedin: 'https://www.linkedin.com/in/philip-agn%C3%A9-a86679411/',
   github: 'https://github.com/philipvagne',
   contact: 'mailto:philipv.agne@gmail.com',
+  agneStudio: 'https://agne-studio.philipv-agne.workers.dev/',
+  hollowbrook: 'https://hollowbrook-website.philipv-agne.workers.dev/',
   semanticVideo: 'https://www.youtube.com/watch?v=leeRrSjDovg',
   semanticKaggle:
     'https://www.kaggle.com/competitions/vibecoding-agents-capstone-project/writeups/new-writeup-1782292838374',
@@ -55,6 +57,32 @@ const homeProjects = [
       src: '/assets/projects/meeting-prep/meeting-prep-overview.png',
       alt: 'Meeting Preparation Assistant showing a meeting list beside a generated meeting brief.',
       className: 'home-project-media--meeting',
+    },
+  },
+]
+
+const webProjects = [
+  {
+    href: links.agneStudio,
+    category: 'Web design · Bilingual',
+    title: 'Agné Studio',
+    description: 'My own web studio site, in Swedish and English.',
+    image: {
+      src: '/assets/projects/web/agne-studio.png',
+      alt: 'Home page of the Agné Studio website',
+      className: 'home-project-media--web',
+    },
+  },
+  {
+    href: links.hollowbrook,
+    category: 'Concept site · Fictional company',
+    title: 'Hollowbrook Outdoor Living',
+    description:
+      'A concept site for a fictional landscaping company. Images are AI-generated.',
+    image: {
+      src: '/assets/projects/web/hollowbrook.png',
+      alt: 'Home page of the Hollowbrook concept website',
+      className: 'home-project-media--web',
     },
   },
 ]
@@ -614,6 +642,20 @@ const renderHomeProjectLink = (project) => `
   </a>
 `
 
+const renderWebProjectLink = (project) => `
+  <a class="home-project-link" href="${project.href}" target="_blank" rel="noopener noreferrer">
+    <div class="home-project-media ${project.image.className}">
+      <img src="${project.image.src}" alt="${project.image.alt}" loading="lazy" />
+    </div>
+    <div class="home-project-copy">
+      <p class="home-project-label">${project.category}</p>
+      <h3>${project.title}</h3>
+      <p class="home-project-description">${project.description}</p>
+      <span class="visually-hidden">(opens in a new tab)</span>
+    </div>
+  </a>
+`
+
 const renderHomePage = () => `
   <main class="page-shell page-shell--home">
     ${renderHeader(routes.home, { home: true, showSocials: false })}
@@ -624,6 +666,7 @@ const renderHomePage = () => `
         <p>
           I’m Philip Agné, a self-taught full-stack developer focused on product thinking, architecture, AI-assisted workflows, and calm user experiences.
         </p>
+        <p class="home-hero-status">Looking for junior or part-time developer roles in Stockholm.</p>
       </div>
 
       <figure class="home-hero-portrait">
@@ -639,6 +682,15 @@ const renderHomePage = () => `
       </div>
       <div class="home-projects-grid">
         ${homeProjects.map((project) => renderHomeProjectLink(project)).join('')}
+      </div>
+    </section>
+
+    <section class="home-projects home-projects--web" aria-labelledby="web-work-heading">
+      <div class="home-section-intro">
+        <h2 id="web-work-heading">Web design and front-end work.</h2>
+      </div>
+      <div class="home-web-grid">
+        ${webProjects.map((project) => renderWebProjectLink(project)).join('')}
       </div>
     </section>
 
